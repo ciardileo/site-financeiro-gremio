@@ -1,7 +1,7 @@
 // app/api/finances/route.ts
 // arquivo que acessa a API
 
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import csv from 'csvtojson';
 import { RawFinanceItem, FinanceItem } from '@/lib/types'; // Importe as interfaces do arquivo compartilhado
 
@@ -9,7 +9,7 @@ import { RawFinanceItem, FinanceItem } from '@/lib/types'; // Importe as interfa
 const GOOGLE_SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSigkTG_im1KTXViAGybCfpJ-BPqRirt4uNARHNhMgn1Q7zjwG_BJ2F_-SqIF6iydQtuhCCGpsRKO4K/pub?output=csv'; 
 
 // função que é executada quando a url for acessada
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     const response = await fetch(GOOGLE_SHEET_CSV_URL);
 

@@ -104,7 +104,7 @@ export default function DashboardClient({
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="mes" />
                     <YAxis />
-                    <Tooltip formatter={(value: any) => formatCurrency(Number(value))} />
+                    <Tooltip formatter={(value: number) => formatCurrency(Number(value))} />
                     <Bar dataKey="valor" fill="#10b981" />
                   </BarChart>
                 </ResponsiveContainer>
@@ -172,7 +172,7 @@ export default function DashboardClient({
                         <Cell key={`cell-entrada-${index}`} fill={entry.color} />
                       ))}
                     </Pie>
-                    <Tooltip formatter={(value: any, name: any) => [`${formatCurrency(Number(value))}`, name]} />
+                    <Tooltip formatter={(value: number, name: string) => [`${formatCurrency(Number(value))}`, name]} />
                   </PieChart>
                 </ResponsiveContainer>
               ) : (
@@ -203,7 +203,7 @@ export default function DashboardClient({
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="mes" />
                     <YAxis />
-                    <Tooltip formatter={(value: any) => formatCurrency(Number(value))} />
+                    <Tooltip formatter={(value: number) => formatCurrency(Number(value))} />
                     <Bar dataKey="valor" fill="#ef4444" />
                   </BarChart>
                 </ResponsiveContainer>
@@ -271,7 +271,7 @@ export default function DashboardClient({
                         <Cell key={`cell-saida-${index}`} fill={entry.color} />
                       ))}
                     </Pie>
-                    <Tooltip formatter={(value: any, name: any) => [`${formatCurrency(Number(value))}`, name]} />
+                    <Tooltip formatter={(value: number, name: string) => [`${formatCurrency(Number(value))}`, name]} />
                   </PieChart>
                 </ResponsiveContainer>
               ) : (
