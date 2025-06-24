@@ -4,6 +4,8 @@ import DashboardClient from './DashboardClient';
 import { FinanceItem, DashboardClientProps } from '@/lib/types'; 
 import { processMonthlyData, processCategoryData } from '@/lib/finance-processing'; 
 
+export const dynamic = 'force-dynamic';
+
 export default async function DashboardPage() {
   let financeData: FinanceItem[] = [];
   let error: string | null = null;

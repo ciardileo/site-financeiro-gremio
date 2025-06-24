@@ -9,6 +9,8 @@ import { BarChart3, Users, Gift, ArrowRight, Ticket } from 'lucide-react'
 import { FinanceItem, HomePageSummaryProps } from '@/lib/types'
 import { formatCurrency } from '@/lib/finance-processing'
 
+export const dynamic = 'force-dynamic';
+
 export default async function Home() {
   let financeData: FinanceItem[] = []; // armazenar os dados brutos
   let error: string | null = null; // mensagens de erro
