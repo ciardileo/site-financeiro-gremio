@@ -14,10 +14,11 @@ export default async function Home() {
   let error: string | null = null; // mensagens de erro
 
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
-    
-    // chama a API
-    const response = await fetch(`${baseUrl}/api/finances`, {
+    const baseUrl = process.env.VERCEL_URL 
+      ? `https://${process.env.VERCEL_URL}` // em produção
+      : 'http://localhost:3000'; // em desenvolvimento local
+
+    const response = await fetch(`${baseUrl}/api/finances`, { // chama a API
       cache: 'no-store', 
     });
 

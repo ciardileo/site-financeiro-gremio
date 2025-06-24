@@ -9,10 +9,12 @@ export default async function DashboardPage() {
   let error: string | null = null;
 
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
-    
-    const response = await fetch(`${baseUrl}/api/finances`, {
-      cache: 'no-store', // busca pela versão mais recente
+    const baseUrl = process.env.VERCEL_URL 
+      ? `https://${process.env.VERCEL_URL}` // em produção
+      : 'http://localhost:3000'; // em desenvolvimento local
+
+    const response = await fetch(`${baseUrl}/api/finances`, { // chama a API
+      cache: 'no-store', 
     });
 
     if (!response.ok) {
