@@ -60,3 +60,11 @@ export function processCategoryData(data: FinanceItem[]): CategorySummary[] {
     return { name, value, color };
   });
 }
+
+// função de formatar a moeda
+export function formatCurrency(value: number){
+  return new Intl.NumberFormat('pt-BR', {
+    style: 'currency',
+    currency: 'BRL'
+  }).format(value);
+}

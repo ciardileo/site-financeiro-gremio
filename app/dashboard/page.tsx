@@ -48,9 +48,7 @@ export default async function DashboardPage() {
         <p className="text-lg text-gray-700 mb-2">Não foi possível carregar os dados financeiros.</p>
         <p className="text-md text-gray-500">Detalhes: {error}</p>
         <p className="text-md text-gray-500 mt-4">
-          Por favor, verifique se a planilha está publicada corretamente,
-          se o link na API Route (`app/api/finances/route.ts`) está atualizado,
-          e se o seu servidor de desenvolvimento está rodando.
+          Por favor, peça para os desenvolvedores analisar a disponibilidade da API.
         </p>
       </div>
     );

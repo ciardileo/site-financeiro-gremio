@@ -1,2 +1,2 @@
 Projeto realizado para a diretoria financeira do *Grêmio Elza Soares* do IFSP - São Miguel Paulista. O objetivo do site é promover a transparência financeira e tornar pública todas as operações financeiras realizadas pelo grêmio.
-Foi realizado com *Next.js*, utilizando as bibliotecas Recharts (para os gráficos) e Shadcn (para UI), além do uso da API do Google Planilhas para obtenção dos dados de forma dinâmica.
+Foi realizado com *Next.js*, utilizando as bibliotecas *Recharts* (para os gráficos) e *Shadcn* (para UI), além do uso da API do Google Planilhas para obtenção dos dados de forma dinâmica.

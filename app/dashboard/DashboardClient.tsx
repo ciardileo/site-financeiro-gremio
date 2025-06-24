@@ -7,7 +7,9 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts'
 import { TrendingUp, TrendingDown, DollarSign } from 'lucide-react'
 import { useState, useEffect } from 'react'
-// importa as interfaces
+
+// lib
+import { formatCurrency } from "@/lib/finance-processing"
 import { DashboardClientProps } from '@/lib/types'; 
 
 
@@ -25,14 +27,6 @@ export default function DashboardClient({
   useEffect(() => {
     setIsMounted(true);
   }, []);
-
-  // função de formatar a moeda
-  const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat('pt-BR', {
-      style: 'currency',
-      currency: 'BRL'
-    }).format(value);
-  };
 
   const entradasDetalhadas = initialData.filter(item => item.tipo === 'Entrada');
   const saidasDetalhadas = initialData.filter(item => item.tipo === 'Saída');

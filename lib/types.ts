@@ -37,3 +37,11 @@ export interface DashboardClientProps {
   pieDataSaidas: CategorySummary[];
 }
 
+export interface HomePageSummaryProps {
+  saldoAtual: number;
+  totalGasto: number;
+  totalArrecadado: number;
+  numeroDespesas: number;
+  numeroEntradas: number;
+}
+
