@@ -15,11 +15,14 @@ export async function GET() {
 
     // checa erros
     if (!response.ok) {
+      console.error(`Erro ao dar GET /finances: ${response.status}, mensagem: ${response.statusText}`)
       return NextResponse.json(
         { error: `Erro ao buscar a planilha: ${response.statusText}`, status: response.status },
         { status: response.status }
       );
     }
+
+    console.log(`GET /finances com sucesso, código ${response.status}`)
 
     // resultado do fetch  
     const csvText = await response.text();

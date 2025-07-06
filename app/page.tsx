@@ -25,6 +25,7 @@ export default async function Home() {
     });
 
     if (!response.ok) {
+      console.error("Erro ao tentar chamar api finances na página inicial")
       const errorData = await response.json();
       throw new Error(errorData.details || `Erro ${response.status}: Falha ao buscar dados financeiros para a página inicial.`);
     }
@@ -60,6 +61,7 @@ export default async function Home() {
 
   // calcula os dados para o resumo
   if (!error && financeData.length > 0) {
+    console.log("Os dados foram carregados com sucesso na página inicial!")
     const totalEntradas = financeData
       .filter(item => item.tipo === 'Entrada')
       .reduce((acc, item) => acc + item.valor, 0);
@@ -79,7 +81,11 @@ export default async function Home() {
       numeroDespesas: numeroDespesas,
       numeroEntradas: numeroEntradas,
     };
+
+    console.log("Todas as transformações dos dados da página inicial foram feitas e o object summaryData foi criado")
   }
+
+  console.log("Página inicial será mostrada!")
 
   return (
     <div className="container mx-auto p-6">

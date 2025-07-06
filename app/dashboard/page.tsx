@@ -21,6 +21,7 @@ export default async function DashboardPage() {
 
     if (!response.ok) {
       const errorData = await response.json();
+      console.error("Erro ao chamar API Finances na page.tsx")
       throw new Error(errorData.details || `Erro ${response.status}: Falha ao buscar dados financeiros.`);
     }
 
@@ -32,6 +33,8 @@ export default async function DashboardPage() {
       ...item,
       id: `${item.data}-${item.descricao}-${index}`, 
     }));
+
+    console.log("Os dados foram carregados e a coluna ID adicionada com sucesso na página dashboard.")
 
   } catch (err: unknown) {
     let errorMessage = 'Erro desconhecido ao buscar dados financeiros.';
@@ -74,5 +77,6 @@ export default async function DashboardPage() {
     pieDataSaidas,
   };
 
+  console.log("A página dashboard será carregada!")
   return <DashboardClient {...clientProps} />;
 }
