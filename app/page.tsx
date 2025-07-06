@@ -24,14 +24,19 @@ export default async function Home() {
       cache: 'no-store', 
     });
 
+    // debug da resposta
+    console.log(`[page.tsx] Log: resultado de GET ${baseUrl}/api/finances:`, response.status, response.statusText, response.ok);
+    const rawText = await response.text();
+    console.log(rawText);
+
+    // resposta de erro no console
     if (!response.ok) {
-      console.error("Erro ao tentar chamar api finances na página inicial")
-      const errorData = await response.json();
-      throw new Error(errorData.details || `Erro ${response.status}: Falha ao buscar dados financeiros para a página inicial.`);
+      console.error(`[page.tsx] Erro: resposta indesejada de ${baseUrl}/api/finances.`)
+      throw new Error(`Erro ${response.status}: Falha ao buscar dados financeiros para a página inicial.`);
     }
 
     // converte os dados para JSON
-    const rawData: Omit<FinanceItem, 'id'>[] = await response.json();
+    const rawData: Omit<FinanceItem, 'id'>[] = JSON.parse(rawText);
 
     // adiciona um ID
     financeData = rawData.map((item, index) => ({
@@ -61,7 +66,7 @@ export default async function Home() {
 
   // calcula os dados para o resumo
   if (!error && financeData.length > 0) {
-    console.log("Os dados foram carregados com sucesso na página inicial!")
+    console.log("[page.tsx] Log: dados carregados com sucesso (sem erros e não nulos)!")
     const totalEntradas = financeData
       .filter(item => item.tipo === 'Entrada')
       .reduce((acc, item) => acc + item.valor, 0);
@@ -82,10 +87,10 @@ export default async function Home() {
       numeroEntradas: numeroEntradas,
     };
 
-    console.log("Todas as transformações dos dados da página inicial foram feitas e o object summaryData foi criado")
+    console.log("[page.tsx] Log: todas as transformações dos dados da página inicial foram feitas e o object summaryData foi criado.")
   }
 
-  console.log("Página inicial será mostrada!")
+  console.log("[page.tsx] Log: página inicial será mostrada!")
 
   return (
     <div className="container mx-auto p-6">

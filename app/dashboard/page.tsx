@@ -19,14 +19,18 @@ export default async function DashboardPage() {
       cache: 'no-store', 
     });
 
+    // debug da resposta
+    console.log(`[dashboard/page.tsx] Log: resultado de GET ${baseUrl}/api/finances:`, response.status, response.statusText, response.ok);
+    const rawText = await response.text();
+    console.log(rawText);
+
     if (!response.ok) {
-      const errorData = await response.json();
-      console.error("Erro ao chamar API Finances na page.tsx")
-      throw new Error(errorData.details || `Erro ${response.status}: Falha ao buscar dados financeiros.`);
+      console.error("[dashboard/page.tsx] Erro: falha ao chamar API Finances na dashboard/page.tsx.")
+      throw new Error(`Erro ${response.status}: Falha ao buscar dados financeiros.`);
     }
 
     // dados brutos da API
-    const rawData: Omit<FinanceItem, 'id'>[] = await response.json();
+    const rawData: Omit<FinanceItem, 'id'>[] = JSON.parse(rawText);
 
     // adiciona uma coluna ID
     financeData = rawData.map((item, index) => ({
@@ -34,7 +38,7 @@ export default async function DashboardPage() {
       id: `${item.data}-${item.descricao}-${index}`, 
     }));
 
-    console.log("Os dados foram carregados e a coluna ID adicionada com sucesso na página dashboard.")
+    console.log("[dashboard/page.tsx] Log: os dados foram carregados e a coluna ID adicionada com sucesso na página dashboard.")
 
   } catch (err: unknown) {
     let errorMessage = 'Erro desconhecido ao buscar dados financeiros.';
@@ -43,7 +47,7 @@ export default async function DashboardPage() {
     } else if (typeof err === 'string') {
       errorMessage = err;
     }
-    console.error("Erro ao buscar dados do dashboard (Server Component):", err);
+    console.error("[dashboard/page.tsx] Erro: falha ao buscar dados do dashboard (Server Component):", err);
     error = errorMessage;
   }
 
@@ -77,6 +81,6 @@ export default async function DashboardPage() {
     pieDataSaidas,
   };
 
-  console.log("A página dashboard será carregada!")
+  console.log("[dashboard/page.tsx] Log: a página dashboard será carregada!")
   return <DashboardClient {...clientProps} />;
 }
