@@ -26,52 +26,6 @@ export default function Navbar() {
         <Link href="/" className="text-xl font-bold text-primary">
           Financeiro - Elza Soares
         </Link>
-
-        <div className="hidden md:flex items-center space-x-1">
-          <Button variant="ghost" asChild>
-            <Link href="/dashboard">Dashboard</Link>
-          </Button>
-          <Button variant="ghost" asChild>
-            <Link href="/doadores" className={disabledLinkClasses} aria-disabled="true">
-              Doadores
-            </Link>
-          </Button>
-          <Button variant="ghost" asChild>
-            <Link href="/rifas" className={disabledLinkClasses} aria-disabled="true">
-              Rifas
-            </Link>
-          </Button>
-        </div>
-
-        <div className="md:hidden">
-          <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
-            <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" aria-label="Abrir Menu">
-                <MenuIcon className="h-6 w-6" />
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="right">
-              <SheetHeader>
-                <SheetTitle>Menu</SheetTitle>
-              </SheetHeader>
-              <nav className="flex flex-col space-y-4 mt-6">
-                <Button variant="ghost" asChild onClick={() => setIsSheetOpen(false)}>
-                  <Link href="/dashboard">Dashboard</Link>
-                </Button>
-                <Button variant="ghost" asChild onClick={() => setIsSheetOpen(false)}>
-                  <Link href="/doadores" className={disabledLinkClasses} aria-disabled="true">
-                    Doadores
-                  </Link>
-                </Button>
-                <Button variant="ghost" asChild onClick={() => setIsSheetOpen(false)}>
-                  <Link href="/rifas" className={disabledLinkClasses} aria-disabled="true">
-                    Rifas
-                  </Link>
-                </Button>
-              </nav>
-            </SheetContent>
-          </Sheet>
-        </div>
       </div>
     </nav>
   )

@@ -7,37 +7,37 @@ import { CategorySummary, FinanceItem, MonthlySummary } from './types';
 
 // pega os dados brutos e gera um array com os valores mensais
 export function processMonthlyData(data: FinanceItem[]): MonthlySummary[] {
-  const monthlyMap = new Map<string, number>();  // hashmap com o total de cada mês  
+  const monthlyMap = new Map<string, { label: string, value: number }>();
 
   data.forEach(item => {
-    // converte string em data
     const [day, month, year] = item.data.split('/').map(Number);
     const date = new Date(Date.UTC(year, month - 1, day));
 
-    // validação da data
     if (isNaN(date.getTime())) {
       console.warn(`Data inválida encontrada: "${item.data}"`);
       return;
     }
 
-    const monthYearKey = format(date, 'MMM/yyyy', { locale: ptBR });
-    const currentTotal = monthlyMap.get(monthYearKey) || 0;
-    monthlyMap.set(monthYearKey, currentTotal + item.valor);  // atualiza o map
+
+    const sortKey = format(date, 'yyyy-MM'); 
+    const displayLabel = format(date, 'MMM/yyyy', { locale: ptBR }); 
+
+    const currentEntry = monthlyMap.get(sortKey) || { label: displayLabel, value: 0 };
+    monthlyMap.set(sortKey, {
+      label: displayLabel,
+      value: currentEntry.value + item.valor,
+    });
   });
 
-  // converte o mapa em array ordenado
-  const sortedMonths = Array.from(monthlyMap.entries())
-      .map(([mesLabel, valor]) => {
-          const [m, y] = mesLabel.split('/');
-          const monthNum = new Date(Date.parse(`${m} 1, 2000`)).getMonth();
-          const sortKey = `${y}-${String(monthNum + 1).padStart(2, '0')}`;
-          return { monthKey: sortKey, mes: mesLabel, valor };
-      })
-      .sort((a, b) => (a.monthKey > b.monthKey ? 1 : -1))
-      .map(({ mes, valor }) => ({ mes, valor })); 
+  const sortedKeys = Array.from(monthlyMap.keys()).sort(); // ordena as chaves "yyyy-MM" alfabeticamente
 
-  return sortedMonths;
+  // mapeia as chaves ordenadas para o formato final
+  return sortedKeys.map(key => {
+    const entry = monthlyMap.get(key)!; // O '!' indica que a chave certamente existe
+    return { mes: entry.label, valor: entry.value };
+  });
 }
+
 
 // resumos por categoria
 export function processCategoryData(data: FinanceItem[]): CategorySummary[] {

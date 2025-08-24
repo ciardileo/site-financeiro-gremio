@@ -4,9 +4,10 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts'
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts'
 import { TrendingUp, TrendingDown, DollarSign } from 'lucide-react'
 import { useState, useEffect } from 'react'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@radix-ui/react-tooltip"
 
 // lib
 import { formatCurrency } from "@/lib/finance-processing"
@@ -40,7 +41,7 @@ export default function DashboardClient({
       {/* cabeçalho */}
       <div>
         <h1 className="text-3xl font-bold tracking-tight">Dashboard Financeiro</h1>
-        <p className="text-muted-foreground">Visão geral das movimentações financeiras do grêmio</p>
+        <p className="text-muted-foreground">Visão geral das movimentações financeiras do grêmio neste ano.</p>
       </div>
 
       {/* cards */}
@@ -104,7 +105,7 @@ export default function DashboardClient({
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="mes" />
                     <YAxis />
-                    <Tooltip formatter={(value: number) => formatCurrency(Number(value))} />
+                    <RechartsTooltip formatter={(value: number) => formatCurrency(Number(value))} />
                     <Bar dataKey="valor" fill="#10b981" />
                   </BarChart>
                 </ResponsiveContainer>
@@ -117,38 +118,50 @@ export default function DashboardClient({
           </Card>
           
           {/* tabela */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Últimas Entradas</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Data</TableHead>
-                    <TableHead>Descrição</TableHead>
-                    <TableHead>Categoria</TableHead>
-                    <TableHead>Valor</TableHead>
-                    <TableHead>Status</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {entradasDetalhadas.map((entrada) => (
-                    <TableRow key={entrada.id}> 
-                      <TableCell>{entrada.data}</TableCell>
-                      <TableCell>{entrada.descricao}</TableCell>
-                      <TableCell>
-                        <Badge variant="secondary">{entrada.categoria}</Badge>
-                      </TableCell>
-                      <TableCell className="font-medium text-green-600">
-                        {formatCurrency(entrada.valor)}
-                      </TableCell>
+          <TooltipProvider>
+            <Card>
+              <CardHeader>
+                <CardTitle>Últimas Entradas</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Data</TableHead>
+                      <TableHead>Descrição</TableHead>
+                      <TableHead>Categoria</TableHead>
+                      <TableHead>Valor</TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </CardContent>
-          </Card>
+                  </TableHeader>
+                  <TableBody>
+                    {entradasDetalhadas.map((entrada) => (
+                      <TableRow key={entrada.id}> 
+                        <TableCell>{entrada.data}</TableCell>
+                        <TableCell className="max-w-[250px]">
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <p className="truncate text-left w-full">
+                                {entrada.descricao}
+                              </p>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p>{entrada.descricao}</p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TableCell>
+                        <TableCell>
+                          <Badge variant="secondary">{entrada.categoria}</Badge>
+                        </TableCell>
+                        <TableCell className="font-medium text-green-600">
+                          {formatCurrency(entrada.valor)}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </CardContent>
+            </Card>
+          </TooltipProvider>
 
           {/* gráfico de pizza */}
           <Card>
@@ -172,7 +185,7 @@ export default function DashboardClient({
                         <Cell key={`cell-entrada-${index}`} fill={entry.color} />
                       ))}
                     </Pie>
-                    <Tooltip formatter={(value: number, name: string) => [`${formatCurrency(Number(value))}`, name]} />
+                    <RechartsTooltip formatter={(value: number, name: string) => [`${formatCurrency(Number(value))}`, name]} />
                   </PieChart>
                 </ResponsiveContainer>
               ) : (
@@ -203,7 +216,7 @@ export default function DashboardClient({
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="mes" />
                     <YAxis />
-                    <Tooltip formatter={(value: number) => formatCurrency(Number(value))} />
+                    <RechartsTooltip formatter={(value: number) => formatCurrency(Number(value))} />
                     <Bar dataKey="valor" fill="#ef4444" />
                   </BarChart>
                 </ResponsiveContainer>
@@ -216,38 +229,50 @@ export default function DashboardClient({
           </Card>
 
           {/* tabela */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Últimas Saídas</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Data</TableHead>
-                    <TableHead>Descrição</TableHead>
-                    <TableHead>Categoria</TableHead>
-                    <TableHead>Valor</TableHead>
-                    <TableHead>Status</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {saidasDetalhadas.map((saida) => (
-                    <TableRow key={saida.id}>
-                      <TableCell>{saida.data}</TableCell>
-                      <TableCell>{saida.descricao}</TableCell>
-                      <TableCell>
-                        <Badge variant="secondary">{saida.categoria}</Badge>
-                      </TableCell>
-                      <TableCell className="font-medium text-red-600">
-                        {formatCurrency(saida.valor)}
-                      </TableCell>
+          <TooltipProvider>
+            <Card>
+              <CardHeader>
+                <CardTitle>Últimas Saídas</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Data</TableHead>
+                      <TableHead>Descrição</TableHead>
+                      <TableHead>Categoria</TableHead>
+                      <TableHead>Valor</TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </CardContent>
-          </Card>
+                  </TableHeader>
+                  <TableBody>
+                    {saidasDetalhadas.map((saida) => (
+                      <TableRow key={saida.id}>
+                        <TableCell>{saida.data}</TableCell>
+                        <TableCell className="max-w-[250px]">
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <p className="truncate text-left w-full">
+                                {saida.descricao}
+                              </p>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p>{saida.descricao}</p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TableCell>
+                        <TableCell>
+                          <Badge variant="secondary">{saida.categoria}</Badge>
+                        </TableCell>
+                        <TableCell className="font-medium text-red-600">
+                          {formatCurrency(saida.valor)}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </CardContent>
+            </Card>
+          </TooltipProvider>
 
           {/* gráfico de pizza */}
           <Card>
@@ -271,7 +296,7 @@ export default function DashboardClient({
                         <Cell key={`cell-saida-${index}`} fill={entry.color} />
                       ))}
                     </Pie>
-                    <Tooltip formatter={(value: number, name: string) => [`${formatCurrency(Number(value))}`, name]} />
+                    <RechartsTooltip formatter={(value: number, name: string) => [`${formatCurrency(Number(value))}`, name]} />
                   </PieChart>
                 </ResponsiveContainer>
               ) : (
